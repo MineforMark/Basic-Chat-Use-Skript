@@ -1,0 +1,51 @@
+# ClearChat Code #
+
+command /clearchat:
+  aliases: /cc
+  permission: clearchat.staff
+  permission message: "What are you looking for?"
+  trigger:
+    loop 300 times:
+      broadcast " "
+    wait 0.1 second
+    send "&c&lChat Has Been Cleared!"
+
+#MuteChat Code #
+
+command /mutechat:
+    aliases: /mc
+    permission: mutechat.staff
+    permission message: "Why do you want silence???"
+    trigger:
+        if {muted} is "False":
+            set {muted} to "True"
+            broadcast "&1&lChat has been Muted!"
+        else:
+            set {muted} to "False"
+            broadcast "&1&lChat has been Unmuted!"
+
+on chat: 
+    if {muted} is "True":
+        if player does not have permission "mutechat.bypass":
+            send "Chat is currently Muted!" to player
+            cancel event
+
+command /mute <offline player>:
+    permission: staff.mute
+    permission message: "You do not have permission to perform this command"
+    trigger:
+        set {_target} to arg-1
+        set {_uuid} to uuid of {_target}
+
+        if {mute::%{_uuid}%} is true:
+            set {mute::%{_uuid}%} to false
+            send "&a%{_target}% has been unmuted."
+        else:
+            set {mute::%{_uuid}%} to true
+            send "&c%{_target}% has been muted."
+
+on chat:
+    set {_uuid} to uuid of player
+    if {mute::%{_uuid}%} is true:
+        cancel event
+        send "&cYou are currently muted." to player
