@@ -7,7 +7,7 @@ command /clearchat:
   trigger:
     loop 300 times:
       broadcast " "
-    wait 0.1 second
+    wait 0.3 second
     send "&c&lChat Has Been Cleared!"
 
 #MuteChat Code #
